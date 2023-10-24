@@ -1,25 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../store/appContext";
-
-import "../../styles/home.css";
-import { Banner } from "../component/banner";
-import { Categorias } from "../component/categorias";
-import { Reviews } from "../component/reviews";
-import { Gallery } from "../component/gallery";
-import { Bienvenida } from "../component/bienvenida";
+import React, { useState, useEffect, useContext } from 'react'
+import { Context } from '../store/appContext'
+import '../../styles/home.css'
 
 export const Home = () => {
-  const { store, actions } = useContext(Context);
-  useEffect(() => {
-    actions.getLibros();
-    actions.getExchangeBooks();
-    actions.getSaleBooks();
-  }, []);
-
+  const { store, actions } = useContext(Context)
   return (
     <div>
-      <Bienvenida />
-      <Gallery />
+      <h1>
+        <strong>SOY EL HOME</strong>
+      </h1>
     </div>
-  );
-};
+  )
+}
