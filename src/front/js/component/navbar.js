@@ -1,71 +1,114 @@
-
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { Context } from '../store/appContext'
+import { useNavigate } from 'react-router-dom'
+import '../../styles/navbar_footer.css'
+import { AiTwotoneHome } from 'react-icons/ai'
 
 export const Navbar = () => {
-  return (<div>
-    <nav className="navbar navbar-expand-lg bg-body-tertiary bg-dark">
-      <div className="container-fluid">
-        <div className="col d-flex">
-          <a className="navbar-brand text-white" href="#">Books Market</a>
-          <Link to="/" className="nav-link active text-white" aria-current="page">Home</Link>
-        </div>
-        <div className="col">
-          <form className="d-flex" role="search">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-light" type="submit">Search</button>
-          </form>
-        </div>
-        <div className="col">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end">
-            <li className="nav-item">
-              <a className="nav-link active text-white" aria-current="page" href="#">Cart</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link text-white" href="#">Wish List</a>
-            </li>
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Iniciar sesión/ Registrarse
-              </a>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link to="/" className="dropdown-item">Iniciar sesión</Link>                  
-                </li>
-                <li>
-                  <Link to="/formularioRegistro" className="dropdown-item" >Registrar</Link>                  
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">Something else here</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  const { store, actions } = useContext(Context)
+  const navigate = useNavigate()
+  const location = useLocation() // renderizar con ruta
+  console.log(location.pathname)
 
-    <nav className="navbar navbar-expand-lg bg-body-tertiary bg-dark">
-      <div className="container-fluid d-flex justify-content-around">
-        <div className="">
-          <Link to="/libroVenta" className="nav-link active text-white" aria-current="page">Libros en Venta</Link>
+  return (
+    <div>
+      <nav className='navbarBooks navbar navbar-expand-lg p-0'>
+        <div className='container-fluid'>
+          <div className='col'>
+            <div className=''>
+              <Link to='/' className='text-dark' aria-current='page'>
+                <h1>HOME</h1>
+              </Link>
+            </div>
+            <ul className='navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end'>
+              <div className='nav-item mt-3 me-4 fs-5 fw-medium'>
+                {store.currentUser?.user?.name}{' '}
+                {store.currentUser?.user?.lastname}
+              </div>
+              {!!store.currentUser ? (
+                <li className='nav-item dropdown'>
+                  <a
+                    className='nav-link dropdown-toggle text-secondary'
+                    href='#'
+                    role='button'
+                    data-bs-toggle='dropdown'
+                    aria-expanded='false'
+                  >
+                    <img
+                      className='img-navbar '
+                      src={store.currentUser?.user?.userImage}
+                      alt='img-perfil'
+                    />
+                  </a>
+                  <ul className='dropdown-menu dropdown-menu-end'>
+                    <li>
+                      <Link to='#' className='dropdown-item'>
+                        {store.currentUser?.user?.name}
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className='dropdown-divider' />
+                    </li>
+                    <li onClick={() => actions.logout()}>
+                      <Link to='/' className='dropdown-item'>
+                        Cerrar sesión
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+              ) : (
+                <li className='nav-item dropdown'>
+                  <a
+                    className='nav-link dropdown-toggle text-white'
+                    href='#'
+                    role='button'
+                    data-bs-toggle='dropdown'
+                    aria-expanded='false'
+                  >
+                    INICIAR SESION / REGISTRARSE
+                  </a>
+                  <ul className='dropdown-menu bg-dark text-light'>
+                    <li>
+                      <Link
+                        to='/login'
+                        className='dropdown-item bg-dark text-light'
+                      >
+                        Iniciar sesión
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to='/register'
+                        className='dropdown-item bg-dark text-light'
+                      >
+                        Registrarse
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className='dropdown-divider' />
+                    </li>
+                  </ul>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
-        <div className="">
-          <Link to="/librosIntercambio" className="nav-link active text-white" aria-current="page">Libros para intercambio</Link>
-        </div>
-        <div className="">
-          <Link to="/masVendidos" className="nav-link active text-white" aria-current="page">Libros más vendidos</Link>
-        </div>
-        <div className="">
-          <Link to="/donacionesRalizadas" className="nav-link active text-white" aria-current="page">Donaciones realizadas</Link>
-        </div>
-      </div>
-    </nav>
+      </nav>
 
-  </div>
-  );
-};
-
+      <nav className='nav navbar-expand-lg bg-black  '>
+        <div className='container-fluid d-flex justify-content-center'>
+          <div className=''>
+            <Link
+              to='/vista'
+              className='navbarItem nav-link  mx-4'
+              aria-current='page'
+            >
+              <h1>VISTA</h1>
+            </Link>
+          </div>
+        </div>
+      </nav>
+    </div>
+  )
+}
